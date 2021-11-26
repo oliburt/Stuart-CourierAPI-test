@@ -1,6 +1,7 @@
 import supertest, { SuperTest, Test } from "supertest";
 import sequelize from "../data";
 import app from "../app";
+import { Messages as ErrorMessages } from "../lib/errors";
 
 const { Courier } = sequelize.models;
 
@@ -17,7 +18,17 @@ describe("Couriers", () => {
   });
 
   describe("GET /couriers/:id", () => {
-    test("works", async () => {
+    test("Non-existent ID", async () => {
+      const response = await testApp
+        .get("/couriers/111")
+        .set("Accept", "application/json")
+        .expect(404)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toEqual({ message: ErrorMessages.CourierNotFound });
+    });
+
+    test("Valid ID", async () => {
       const courier = await Courier.create({
         id: 123,
         available_capacity: 10,
