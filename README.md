@@ -16,7 +16,7 @@ TypeScript on Node
 
 ### Database
 
-SQLite - Lightweight for a project of this size. The choice of SQL based DB came down to the fact that, while there are not related data types in the current scope, I could envision this type of API being extended to include relational data (such as deliveries) and therefore making it a suitable choice. Additionally, using ACID compliant DB is a good idea for systems where you want to use transactions to help avoid race conditions.
+SQLite - Lightweight for a project of this size. The choice of SQL based DB came down to the fact that, while there are not related data types in the current scope, I could envision this type of API being extended to include relational data (such as deliveries) and therefore making it a suitable choice. Additionally, using ACID compliant DB is a good idea for systems where one wants to use transactions
 
 ### ORM
 
@@ -46,7 +46,7 @@ Then run the container:
 $ docker run -p 3000:3000 <TAG_NAME>
 ```
 
-Additionally, if deploying (or for testing purposes) add a volume to maintain your sqlite db:
+Additionally, if deploying (or for testing purposes) add a volume to maintain the sqlite dbs (setup under src/data directory):
 
 ```
 $ docker run -p 3000:3000 -v <VOLUME_NAME>:/app/src/data/ <TAG_NAME>
@@ -194,4 +194,4 @@ $ curl -X GET http://localhost:3000/couriers/1234 -H "Content-Type: application/
 
 - Ideally I would also add some kind of interactive API documentation like swagger
 
-- With more time I might also improve the Docker setup. It would be useful to set it up so that Docker could also be used for development (instead of just the production build). Future extension to the project might also mean we could set up an additional service for managing the database in a separate container especially if migrating to something like MySQL or Postgres. Then I would write a docker-compose to be used for setting up the application.
+- With more time I might also improve the Docker setup. It would be useful to set it up so that Docker could also be used for development (instead of just the production build). Future extension to the project might also mean I could set up an additional service for managing the database in a separate container especially if migrating to something like MySQL or Postgres. Then I would write a docker-compose to be used for setting up the application.
