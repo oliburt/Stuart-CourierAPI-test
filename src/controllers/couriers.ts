@@ -36,6 +36,16 @@ export async function createCourier(req: Request, res: Response) {
 
 export async function updateCourierCapacity(req: Request, res: Response) {
   try {
+    const { available_capacity } = req.body;
+    const { id } = req.params;
+    const courier = await Courier.findByPk(id);
+    if (courier == null) {
+      throw new CourierNotFound();
+    }
+    courier.set("available_capacity", available_capacity);
+    await courier.save();
+
+    return res.status(200).json(courier);
   } catch (error) {
     handleErrorResponse(error, res);
   }

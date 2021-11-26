@@ -129,5 +129,47 @@ describe("Couriers", () => {
         available_capacity: data.available_capacity
       });
     });
+
+    test("Fails if available_capacity is below zero", async () => {
+      const courier = await Courier.create({
+        id: 1111,
+        available_capacity: 45,
+        max_capacity: 45
+      });
+      const data = {
+        available_capacity: -10
+      };
+      const response = await testApp
+        .patch(`/couriers/${courier.get("id")}`)
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(422)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({
+        message: new RegExp(ValidationErrorMessages.AvailableGTEZero)
+      });
+    });
+
+    test("Fails if available_capacity is greater than max_capacity", async () => {
+      const courier = await Courier.create({
+        id: 2000,
+        available_capacity: 45,
+        max_capacity: 45
+      });
+      const data = {
+        available_capacity: 50
+      };
+      const response = await testApp
+        .patch(`/couriers/${courier.get("id")}`)
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(422)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({
+        message: new RegExp(ValidationErrorMessages.AvailableLTMax)
+      });
+    });
   });
 });
