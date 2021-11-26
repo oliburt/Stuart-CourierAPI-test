@@ -1,13 +1,12 @@
 import { Sequelize } from "sequelize";
 
-import CourierSetup from "../models/Courier";
-import logger from "../utils/logger";
+import config from "../config";
+import dbConfig from "./config";
 
-export const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: ":memory:",
-  logging: msg => logger.debug(msg)
-});
+import CourierSetup from "../models/Courier";
+
+const options = dbConfig[config.ENV];
+export const sequelize = new Sequelize(options);
 
 const models = [CourierSetup];
 for (const setup of models) {
