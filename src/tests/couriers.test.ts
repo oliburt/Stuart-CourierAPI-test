@@ -105,4 +105,29 @@ describe("Couriers", () => {
       });
     });
   });
+
+  describe("PATCH /couriers/:id", () => {
+    test("Correctly updates and returns the courier", async () => {
+      const courier = await Courier.create({
+        id: 999,
+        available_capacity: 45,
+        max_capacity: 45
+      });
+      const data = {
+        available_capacity: 30
+      };
+      const response = await testApp
+        .patch(`/couriers/${courier.get("id")}`)
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(200)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({
+        id: courier.get("id"),
+        max_capacity: courier.get("max_capacity"),
+        available_capacity: data.available_capacity
+      });
+    });
+  });
 });
