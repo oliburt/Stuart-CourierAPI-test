@@ -18,5 +18,7 @@ COPY package.json ./
 RUN npm install --production
 COPY --from=builder /app/build .
 
+ENV NODE_ENV=production
+
 EXPOSE 3000
 CMD ["node", "server.js"]
