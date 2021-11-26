@@ -1,5 +1,3 @@
-import { Response } from "express";
-
 export const Messages = {
   CourierNotFound: "Courier Not Found",
   InternalServerError: "Internal Server Error"
@@ -7,6 +5,11 @@ export const Messages = {
 
 export interface CustomError extends Error {
   send(res: Response): void;
+}
+
+interface Response {
+  status(status: number): Response;
+  json(obj: any): Response;
 }
 
 export function isCustomError(e: unknown): e is CustomError {
