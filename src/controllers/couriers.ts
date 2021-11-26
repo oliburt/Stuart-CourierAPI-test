@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
-import Courier from "../models/Courier";
+import sequelize from "../data";
+
+const { Courier } = sequelize.models;
 
 export async function fetchCourier(req: Request, res: Response) {
   try {
