@@ -13,6 +13,10 @@ describe("Couriers", () => {
     testApp = supertest(app);
   });
 
+  beforeEach(async () => {
+    await Courier.sync({ force: true });
+  });
+
   afterAll(async () => {
     await sequelize.close();
   });
@@ -44,6 +48,26 @@ describe("Couriers", () => {
         id: courier.get("id"),
         available_capacity: courier.get("available_capacity"),
         max_capacity: courier.get("max_capacity")
+      });
+    });
+  });
+
+  describe("POST /couriers", () => {
+    test("Correctly creates and returns new courier", async () => {
+      const data = {
+        id: 1234,
+        max_capacity: 45
+      };
+      const response = await testApp
+        .post("/couriers")
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(201)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({
+        ...data,
+        available_capacity: data.max_capacity
       });
     });
   });
