@@ -2,6 +2,7 @@ import supertest, { SuperTest, Test } from "supertest";
 import sequelize from "../data";
 import app from "../app";
 import { Messages as ErrorMessages } from "../lib/errors";
+import { ErrorMessages as ValidationErrorMessages } from "../models/Courier";
 
 const { Courier } = sequelize.models;
 
@@ -68,6 +69,39 @@ describe("Couriers", () => {
       expect(response.body).toMatchObject({
         ...data,
         available_capacity: data.max_capacity
+      });
+    });
+
+    test("Fails when courier already exists", async () => {
+      const data = {
+        id: 1234,
+        max_capacity: 45
+      };
+      await Courier.create({ ...data, available_capacity: data.max_capacity });
+      const response = await testApp
+        .post("/couriers")
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(422)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({ message: /id must be unique/ });
+    });
+
+    test("Validation Error if max_capacity is less than zero", async () => {
+      const data = {
+        id: 12345,
+        max_capacity: -10
+      };
+      const response = await testApp
+        .post("/couriers")
+        .set("Accept", "application/json")
+        .send(data)
+        .expect(422)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject({
+        message: new RegExp(ValidationErrorMessages.MaxGTZero)
       });
     });
   });
