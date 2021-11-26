@@ -43,9 +43,9 @@ export async function updateCourierCapacity(req: Request, res: Response) {
     const { available_capacity } = req.body;
     const { id } = req.params;
 
-    // Transaction to avoid race conditions with lookup
+    // Transaction with lock to avoid race conditions with lookup
     const result = await sequelize.transaction(async t => {
-      const courier = await Courier.findByPk(id, { transaction: t });
+      const courier = await Courier.findByPk(id, { transaction: t, lock: true });
       if (courier == null) {
         throw new CourierNotFound();
       }
@@ -79,7 +79,8 @@ export async function lookupCouriersByCapacity(req: Request, res: Response) {
             [Op.gte]: cap
           }
         },
-        transaction: t
+        transaction: t,
+        skipLocked: true // skip locked couriers
       });
       return couriers;
     });
