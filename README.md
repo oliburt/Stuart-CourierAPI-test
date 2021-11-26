@@ -184,9 +184,9 @@ $ curl -X GET http://localhost:3000/couriers/1234 -H "Content-Type: application/
 
 - There is a quite an obvious dependency on Sequelize as the ORM provider. If given more time I would work on a way of abstracting this in such a way that the project is not necessarily "locked-in" to one ORM provider (or any kind ORM / ODM etc.) if for whatever reason it might need to change.
 
-- Testing wise I have written a number of tests for the main functionality of the application however this would ideally be extended to handle less obvious use cases that I may have missed. Potentially it would be a good idea to make use of code coverage tools to see what has not been tested yet as well
-
 - My lack of familiarity with Sequelize definitely slowed me down in this process and it's possible I have not setup the project using the most common / idiomatic design patterns while using this library.
+
+- Testing wise I have written a number of tests for the main functionality of the application however this would ideally be extended to handle less obvious use cases I may have missed. It would be a good idea to make use of code coverage tools to see what has not been tested yet as well. Also, the tests are already noticeably slow due to the overhead needed for interacting and clearing the DB, even the application were to grow the current setup might need some reworking to improve the speed of execution
 
 - Given more time I would have also worked more on the solution for attempting to avoid race conditions while fetching and updating couriers capacities. I am pretty sure I have made the right first steps by introducing transactions with locks but it would require more time and research to come up with suitable tests for the solution
 
