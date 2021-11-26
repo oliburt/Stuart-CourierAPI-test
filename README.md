@@ -56,7 +56,7 @@ Replace ports or <TAG_NAME> and <VOLUME_NAME> with suitable names for the machin
 
 ### Option 2 - Local Development Server
 
-This option requires node to be installed on the system. Node version should be at v12 or above.
+This option requires node to be installed on the system. Node version should be at least v12 or above.
 Run the start script:
 
 ```
@@ -193,3 +193,5 @@ $ curl -X GET http://localhost:3000/couriers/1234 -H "Content-Type: application/
 - The Error handling was a good start but I think there could be improvements made especially with regards to validating inputs and providing useful feedback to the API user.
 
 - Ideally I would also add some kind of interactive API documentation like swagger
+
+- With more time I might also improve the Docker setup. It would be useful to set it up so that Docker could also be used for development (instead of just the production build). Future extension to the project might also mean we could set up an additional service for managing the database in a separate container especially if migrating to something like MySQL or Postgres. Then I would write a docker-compose to be used for setting up the application.
