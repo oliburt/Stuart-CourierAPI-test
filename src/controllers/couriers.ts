@@ -33,3 +33,10 @@ export async function createCourier(req: Request, res: Response) {
     handleErrorResponse(error, res);
   }
 }
+
+export async function updateCourierCapacity(req: Request, res: Response) {
+  try {
+  } catch (error) {
+    handleErrorResponse(error, res);
+  }
+}
