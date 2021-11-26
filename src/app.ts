@@ -9,8 +9,6 @@ registerRoutes(app);
 
 // Catch all 404 Route Not Found
 app.use((_req: Request, res: Response) => {
-  console.log(_req.method);
-
   res.status(404).json({ message: "Route Not Found" });
 });
 
