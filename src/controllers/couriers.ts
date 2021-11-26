@@ -80,6 +80,7 @@ export async function lookupCouriersByCapacity(req: Request, res: Response) {
           }
         },
         transaction: t,
+        lock: true,
         skipLocked: true // skip locked couriers
       });
       return couriers;
