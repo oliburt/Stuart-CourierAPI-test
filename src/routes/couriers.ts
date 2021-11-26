@@ -3,10 +3,13 @@ import express, { Express } from "express";
 import {
   fetchCourier,
   createCourier,
-  updateCourierCapacity
+  updateCourierCapacity,
+  lookupCouriersByCapacity
 } from "../controllers/couriers";
 
 const router = express.Router();
+
+router.get("/lookup", lookupCouriersByCapacity);
 
 router.get("/:id", fetchCourier);
 

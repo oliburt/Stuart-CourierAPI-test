@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Op } from "sequelize/dist";
 import sequelize from "../data";
 import { CourierNotFound } from "../lib/errors";
 import { handleErrorResponse } from "../utils/helpers";
@@ -46,6 +47,24 @@ export async function updateCourierCapacity(req: Request, res: Response) {
     await courier.save();
 
     return res.status(200).json(courier);
+  } catch (error) {
+    handleErrorResponse(error, res);
+  }
+}
+
+export async function lookupCouriersByCapacity(req: Request, res: Response) {
+  try {
+    const { capacity_required } = req.body;
+
+    const couriers = await Courier.findAll({
+      where: {
+        available_capacity: {
+          [Op.gte]: capacity_required
+        }
+      }
+    });
+
+    return res.status(200).json(couriers);
   } catch (error) {
     handleErrorResponse(error, res);
   }

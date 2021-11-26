@@ -172,4 +172,71 @@ describe("Couriers", () => {
       });
     });
   });
+
+  describe("GET /couriers/lookup", () => {
+    const couriers = [
+      {
+        id: 1,
+        max_capacity: 45,
+        available_capacity: 45
+      },
+      {
+        id: 2,
+        max_capacity: 45,
+        available_capacity: 30
+      },
+      {
+        id: 3,
+        max_capacity: 60,
+        available_capacity: 50
+      },
+      {
+        id: 4,
+        max_capacity: 20,
+        available_capacity: 20
+      },
+      {
+        id: 5,
+        max_capacity: 80,
+        available_capacity: 30
+      }
+    ];
+    test("Only fetches couriers with a available_capacity greater than or equal to capacity_required", async () => {
+      await Courier.bulkCreate(couriers);
+      const data = { capacity_required: 35 };
+      const response = await supertest(app)
+        .get("/couriers/lookup")
+        .send(data)
+        .set("Accept", "application/json")
+        .expect(200)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toMatchObject([
+        {
+          id: 1,
+          max_capacity: 45,
+          available_capacity: 45
+        },
+
+        {
+          id: 3,
+          max_capacity: 60,
+          available_capacity: 50
+        }
+      ]);
+    });
+
+    test("Returns an empty list if no couriers meet the requirement", async () => {
+      await Courier.bulkCreate(couriers);
+      const data = { capacity_required: 70 };
+      const response = await supertest(app)
+        .get("/couriers/lookup")
+        .send(data)
+        .set("Accept", "application/json")
+        .expect(200)
+        .expect("Content-Type", /json/);
+
+      expect(response.body).toEqual([]);
+    });
+  });
 });
