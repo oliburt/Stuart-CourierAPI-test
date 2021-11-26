@@ -17,3 +17,19 @@ export async function fetchCourier(req: Request, res: Response) {
     handleErrorResponse(error, res);
   }
 }
+
+export async function createCourier(req: Request, res: Response) {
+  try {
+    const { id, max_capacity } = req.body;
+
+    const courier = await Courier.create({
+      id,
+      max_capacity,
+      available_capacity: max_capacity // When courier is first created, available_capacity is equal to max_capacity
+    });
+
+    return res.status(201).json(courier);
+  } catch (error) {
+    handleErrorResponse(error, res);
+  }
+}
