@@ -159,3 +159,14 @@ $ curl -X GET http://localhost:3000/couriers/1234 --data '
   "available_capacity": 0
 }
 ```
+
+---
+
+## Improvements and Notes
+
+- There is a quite an obvious dependency on Sequelize as the ORM provider. If given more time I would work on a way of abstracting this in such a way that the project is not necessarily "locked-in" to one ORM provider (or any kind ORM / ODM etc.) if for whatever reason it might need to change.
+- Testing wise I have written a good number of tests for the main functionality of the application however this could ideally be extended to handle less obvious use cases that I may have missed. Potentially it would be a good idea to making use of code coverage tools to see what has not been tested yet as well
+- My lack of familiarity with Sequelize definitely slowed me down in this process and it's possible I have not setup the project using the most common / idiomatic design patterns while using this library.
+- Given more time I would have also worked more on the solution for attempting to avoid race conditions while fetching and updating couriers capacities. I am pretty sure I have made the right first steps by introducing transactions with locks but it would require more time and research to come up with suitable tests.
+- The Error handling was a good start but I think there could be improvements made especially with regards to validating inputs and providing useful feedback to the API user.
+- Ideally I would also add some kind of interactive documentation generator like swagger
