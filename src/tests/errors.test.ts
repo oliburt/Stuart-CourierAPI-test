@@ -4,7 +4,8 @@ import {
   CourierNotFound,
   Messages,
   InternalServerError,
-  CustomValidationError
+  CustomValidationError,
+  InvalidInputError
 } from "../lib/errors";
 
 class MockResponse {
@@ -77,6 +78,16 @@ describe("Errors", () => {
       expect(res.values).toMatchObject({
         status: 422,
         json: { message: /Validation Error/ }
+      });
+    });
+
+    test("InvalidInputError", () => {
+      const error = new InvalidInputError("TEST");
+      const res = new MockResponse();
+      error.send(res);
+      expect(res.values).toMatchObject({
+        status: 400,
+        json: { message: /Input Error/ }
       });
     });
   });

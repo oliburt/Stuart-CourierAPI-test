@@ -57,3 +57,13 @@ export class CustomValidationError extends Error implements CustomError {
     return res.status(422).json({ message: this.message });
   }
 }
+
+export class InvalidInputError extends Error implements CustomError {
+  constructor(message: string) {
+    super(`Input Error: ${message}`);
+  }
+
+  send(res: Response) {
+    return res.status(400).json({ message: this.message });
+  }
+}
