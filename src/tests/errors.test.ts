@@ -1,8 +1,10 @@
+import { ValidationError } from "sequelize/dist";
 import {
   isCustomError,
   CourierNotFound,
   Messages,
-  InternalServerError
+  InternalServerError,
+  CustomValidationError
 } from "../lib/errors";
 
 class MockResponse {
@@ -64,6 +66,17 @@ describe("Errors", () => {
       expect(res.values).toEqual({
         status: 500,
         json: { message: Messages.InternalServerError }
+      });
+    });
+
+    test("CustomValidationError", () => {
+      const mockValidationError = new ValidationError("TEST");
+      const error = new CustomValidationError(mockValidationError);
+      const res = new MockResponse();
+      error.send(res);
+      expect(res.values).toMatchObject({
+        status: 422,
+        json: { message: /Validation Error/ }
       });
     });
   });
