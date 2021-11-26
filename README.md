@@ -2,13 +2,13 @@
 
 ## Stack
 
-### Framework:
-
-[ExpressJS](https://expressjs.com/) - Lightweight and suitable for rapid development of a small project
-
 ### Language:
 
 TypeScript on Node
+
+### Framework:
+
+[ExpressJS](https://expressjs.com/) - Lightweight and suitable for rapid development of a small project
 
 ### Testing Framework
 
